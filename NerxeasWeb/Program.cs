@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NerxeasWeb.Data;
+using Nerxeas.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NerxeasWeb.Data;
-using NerxeasWeb.Models;
+using Nerxeas.DataAccess;
+using Nerxeas.Models;
 
 namespace NerxeasWeb.Controllers
 {

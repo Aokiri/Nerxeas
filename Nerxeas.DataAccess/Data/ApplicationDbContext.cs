@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NerxeasWeb.Models;
+using Nerxeas.Models;
 
-namespace NerxeasWeb.Data
+namespace Nerxeas.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {

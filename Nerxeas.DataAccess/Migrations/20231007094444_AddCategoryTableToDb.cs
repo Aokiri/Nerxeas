@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace NerxeasWeb.Migrations
+namespace Nerxeas.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTableToDb : Migration

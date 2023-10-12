@@ -1,4 +1,4 @@
-namespace NerxeasWeb.Models
+namespace Nerxeas.Models
 {
     public class ErrorViewModel
     {
