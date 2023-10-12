@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NerxeasWeb.Models;
+using Nerxeas.Models;
 using System.Diagnostics;
 
-namespace NerxeasWeb.Controllers
+namespace NerxeasWeb.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

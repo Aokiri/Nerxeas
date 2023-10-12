@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace NerxeasWeb.Models
+namespace Nerxeas.Models
 {
     public class Category
     {

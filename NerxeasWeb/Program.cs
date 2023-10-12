@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using NerxeasWeb.Data;
+using Nerxeas.DataAccess;
+using Nerxeas.DataAccess.Repository;
+using Nerxeas.DataAccess.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,8 @@ builder.Services.AddControllersWithViews();
 // Add EntityFrameworkCore (DbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Adding Dependency Injection for ICategoryRepository with a Scoped lifetime.
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
@@ -28,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
