@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 // Add EntityFrameworkCore (DbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Adding Dependency Injection for ICategoryRepository with a Scoped lifetime.
+// Adding Dependency Injection for UnitOfWork with a Scoped lifetime.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

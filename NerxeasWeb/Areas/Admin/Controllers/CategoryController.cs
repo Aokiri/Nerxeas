@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Nerxeas.DataAccess;
 using Nerxeas.DataAccess.Repository.IRepository;
 using Nerxeas.Models;
 
