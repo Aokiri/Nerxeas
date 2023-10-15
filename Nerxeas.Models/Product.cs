@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 // Product Model for the Bulky Book Web Store, not finished yet.
 
@@ -54,6 +55,10 @@ namespace Nerxeas.Models
         // 2. Define a Navigation Property for the Category Table
         // 3. Define an Attribute with ForeignKey with the value of the Foreign Key
         [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
+
+        // [ValidateNever] /// Remove this later.
+        public string ImageUrl { get; set; }
     }
 }
