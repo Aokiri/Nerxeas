@@ -26,7 +26,8 @@ namespace NerxeasWeb.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
+        // Stands for "Update + Insert". If ID is present, will Update/Edit; else Insert/Create.
         {
             ProductVM productVM = new()
             {
@@ -40,11 +41,22 @@ namespace NerxeasWeb.Areas.Admin.Controllers
                 Product = new Product()
             };
 
-            return View(productVM);
+            if (id == null || id == 0)
+            {
+                // Create 
+                return View(productVM);
+            }
+            else
+            {
+                // Update functionality
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productVM);
+            }
+
         }
 
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -65,35 +77,6 @@ namespace NerxeasWeb.Areas.Admin.Controllers
 
                 return View(productVM);
             }
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-                return NotFound();
-
-            Product? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (productFromDb == null)
-                return NotFound();
-
-            return View(productFromDb);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product updated successfully";
-
-                return RedirectToAction("Index");
-            }
-
-            return View();
         }
 
         [HttpGet]
