@@ -19,6 +19,9 @@ namespace Nerxeas.DataAccess.Repository
             _db = db;
             this.dbSet = _db.Set<T>();
             // For example, _db.Categories == dbSet
+
+            _db.Products.Include(u => u.Category).Include(u => u.CategoryId);
+            // With this I can populate the fields with EFCore.
         }
 
         public void Add(T entity)
@@ -26,22 +29,46 @@ namespace Nerxeas.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
-            // Here we create a Queryable item, so we can apply queries to this object
-            // (In this case, the dbSet (for example, _db.Categories <<)
+            // 1. Here we create a Queryable item, so we can apply queries to this object
+            //    (In this case, the dbSet (for example, _db.Categories <<)
             IQueryable<T> query = dbSet;
 
-            // Then, we apply the filters to the query and assign them back to the Queryable item.
+            // 2. Then, we apply the filters to the query and assign them back to the Queryable item.
             query = query.Where(filter);
 
-            // Then return the Entity, because Get should return an TEntity (in this example, a Category)
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                // Usar ',' en vez de crear una char array funcionaría perfectamente, 
+                // pero con la array es dinámico y escalable por si quiero añadir más separaciones.
+                // Por ahora, tanto ',' como new char[] funcionan exactamente igual.
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            // 3. Then return the Entity, because Get should return an TEntity (in this example, a Category)
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        // We need to recieve the includeProperties as a comma separated value, like Category,CoverType ...
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    // Usar ',' en vez de crear una char array funcionaría perfectamente, 
+                    // pero con la array es dinámico y escalable por si quiero añadir más separaciones.
+                    // Por ahora, tanto ',' como new char[] funcionan exactamente igual.
+                {
+                    query = query.Include(includeProp);
+                }
+            }
             return query.ToList();
         }
 

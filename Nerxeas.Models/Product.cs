@@ -58,7 +58,7 @@ namespace Nerxeas.Models
         [ValidateNever]
         public Category Category { get; set; }
 
-        // [ValidateNever] /// Remove this later.
+        [ValidateNever] /// Remove this later.
         public string ImageUrl { get; set; }
     }
 }

@@ -12,11 +12,13 @@ namespace Nerxeas.DataAccess.Repository.IRepository
     {
         // T => Category, so I have to implement these methods to work with Categories (CRUD)
 
-        IEnumerable<T> GetAll();
+        // 20.10.23 >>> Added an includeProperties to add if any, to populate that with EFCore.
+        // Like Categories and CoverTypes, anything provided by the user.
+        IEnumerable<T> GetAll(string? includeProperties = null);
 
         // This parameter is like this to work with LINQ Expressions.
         // We need to pass a boolean like that when we work with LINQ.
-        T Get(Expression<Func<T, bool>> filter);
+        T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
 
         void Add(T entity);
 

@@ -17,9 +17,27 @@ namespace Nerxeas.DataAccess.Repository
             _db = db;
         }
 
-        public void Update(Product obj)
+        public void Update(Product obj) // Here comes the custom Update method.
         {
-            _db.Products.Update(obj);
+            var objFromDb = _db.Products.FirstOrDefault( u => u.Id == obj.Id );
+            if ( objFromDb != null )
+            {
+                objFromDb.Title = obj.Title;
+                objFromDb.Description = obj.Description;
+                objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.ISBN = obj.ISBN;
+                objFromDb.Author = obj.Author;
+                objFromDb.Price100 = obj.Price100;
+                objFromDb.Price50 = obj.Price50;
+                objFromDb.Price = obj.Price;
+                objFromDb.ListPrice = obj.ListPrice;
+
+                if ( objFromDb.ImageUrl != null )
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl;
+                }
+
+            }
         }
     }
 }
