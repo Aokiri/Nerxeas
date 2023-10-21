@@ -54,7 +54,6 @@ namespace NerxeasWeb.Areas.Admin.Controllers
                 productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
                 return View(productVM);
             }
-
         }
 
         [HttpPost]
@@ -115,36 +114,6 @@ namespace NerxeasWeb.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-                return NotFound();
-
-            Product? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (productFromDb == null)
-                return NotFound();
-
-            return View(productFromDb);
-        }
-
-        [HttpPost]
-        [ActionName("Delete")] // Esto es para redirigir la ruta de Delete a esta acción, a pesar de su nombre.
-        public IActionResult DeletePOST(int? id)
-        {
-            Product? obj = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (obj == null)
-                return NotFound();
-
-            _unitOfWork.Product.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Product deleted successfully";
-
-            return RedirectToAction("Index");
-        }
-
         // As .NET Controller supports buildt-in APIs,
         // we just have to call them instead of building an entire API for anything.
         #region API CALLS
@@ -155,6 +124,30 @@ namespace NerxeasWeb.Areas.Admin.Controllers
             List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
 
             return Json(new { data = objProductList });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
+            if (productToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting the product" });
+            }
+
+            var oldImagePath =
+                Path.Combine(_webHostEnvironment.WebRootPath, 
+                productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            _unitOfWork.Product.Remove(productToBeDeleted);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Product deleted successfully" });
         }
 
         #endregion
