@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Nerxeas.Models;
 
 namespace Nerxeas.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    // #109> Importante que provenga de IdentityDbContext para la compatibilidad con Identity de .NET
+    public class ApplicationDbContext : IdentityDbContext
     {
         // Creating the DbContext and adding it some options. Those options are builded in Program.cs
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -17,6 +19,10 @@ namespace Nerxeas.DataAccess
         // Seeding some dummy data to our Database/Table to test it via EntityFrameworkCore.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            // #109> This line is necessary as well to implement IdentityDbContext,
+            //       see Discord Notes for further information.
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 123 },
                 new Category { Id = 2, Name = "SciFi", DisplayOrder = 456 },

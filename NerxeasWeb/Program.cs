@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Nerxeas.DataAccess;
 using Nerxeas.DataAccess.Repository;
 using Nerxeas.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllersWithViews();
 // Add EntityFrameworkCore (DbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 // Adding Dependency Injection for UnitOfWork with a Scoped lifetime.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
