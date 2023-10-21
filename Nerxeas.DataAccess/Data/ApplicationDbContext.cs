@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nerxeas.Models;
 
 namespace Nerxeas.DataAccess
 {
     // #109> Importante que provenga de IdentityDbContext para la compatibilidad con Identity de .NET
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         // Creating the DbContext and adding it some options. Those options are builded in Program.cs
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

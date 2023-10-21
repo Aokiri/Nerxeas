@@ -12,7 +12,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+// Add Identity to EFCore. Commented the RequireConfirmedAccount for testing development reasons.
+builder.Services.AddDefaultIdentity<IdentityUser>(/* options => options.SignIn.RequireConfirmedAccount = true */).AddEntityFrameworkStores<ApplicationDbContext>();
+
 // Adding Dependency Injection for UnitOfWork with a Scoped lifetime.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -30,7 +32,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication(); // Added Authentication just before Authorization, to check if an user/passwd is valid.
 app.UseAuthorization();
 
 app.MapControllerRoute(
