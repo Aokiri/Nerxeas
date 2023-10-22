@@ -13,9 +13,10 @@ namespace Nerxeas.DataAccess
         {
         }
 
-        // Creating a table...
+        // Creating a table & maping the Models >>
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         // Seeding some dummy data to our Database/Table to test it via EntityFrameworkCore.
         protected override void OnModelCreating(ModelBuilder modelBuilder)

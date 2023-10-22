@@ -15,6 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add Identity to EFCore. Commented the RequireConfirmedAccount for testing development reasons.
 builder.Services.AddDefaultIdentity<IdentityUser>(/* options => options.SignIn.RequireConfirmedAccount = true */).AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Add Razor Pages (for Identity Purpouses)
+builder.Services.AddRazorPages();
+
 // Adding Dependency Injection for UnitOfWork with a Scoped lifetime.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -35,6 +38,7 @@ app.UseRouting();
 app.UseAuthentication(); // Added Authentication just before Authorization, to check if an user/passwd is valid.
 app.UseAuthorization();
 
+app.MapRazorPages(); // Map Razor Pages for identity purpouses.
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
