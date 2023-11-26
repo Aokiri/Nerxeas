@@ -3,6 +3,8 @@ using Nerxeas.DataAccess;
 using Nerxeas.DataAccess.Repository;
 using Nerxeas.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
+using Nerxeas.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +15,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add Identity to EFCore. Commented the RequireConfirmedAccount for testing development reasons.
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(/* options => options.SignIn.RequireConfirmedAccount = true */).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(/* options => options.SignIn.RequireConfirmedAccount = true */)
+    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+// Add routing to map Identity default options (added "/Identity/" to the route)
+// 120. Always add ConfigureApplicationCookie after your Identity (AddIdentity)
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 
 // Add Razor Pages (for Identity Purpouses)
 builder.Services.AddRazorPages();
 
-// Adding Dependency Injection for UnitOfWork with a Scoped lifetime.
+// Add Dependency Injection for UnitOfWork with a Scoped lifetime.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Add an Scoped lifetime service for EmailSender
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

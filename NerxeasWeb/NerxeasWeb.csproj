@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Nerxeas.DataAccess\Nerxeas.DataAccess.csproj" />
+	  <ProjectReference Include="..\Nerxeas.Utility\Nerxeas.Utility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

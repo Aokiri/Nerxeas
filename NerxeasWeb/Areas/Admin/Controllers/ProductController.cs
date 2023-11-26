@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nerxeas.DataAccess.Repository.IRepository;
 using Nerxeas.Models;
 using Nerxeas.Models.ViewModels;
+using Nerxeas.Utility;
 using System.Collections.Generic;
 
 namespace NerxeasWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
