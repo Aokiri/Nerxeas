@@ -16,6 +16,7 @@ namespace Nerxeas.DataAccess
         // Creating a table & maping the Models >>
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         // Seeding some dummy data to our Database/Table to test it via EntityFrameworkCore.
@@ -117,6 +118,18 @@ namespace Nerxeas.DataAccess
                     ImageUrl = ""
                 }
                 );
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company 
+                { 
+                    Id = 1, 
+                    Name = "Compañia INC", 
+                    City = "Arkansas", 
+                    PhoneNumber = "123121111",
+                    StreetAddress = "123 McKenzy A",
+                    State = "IL",
+                    PostalCode = "12300"
+                });
 
         }
     }

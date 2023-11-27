@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Nerxeas.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class Company
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -15,5 +17,7 @@ namespace Nerxeas.Models
         public string? State { get; set; }
 
         public string? PostalCode { get; set; }
+
+        public string? PhoneNumber { get; set; }
     }
 }
